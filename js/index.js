@@ -42,6 +42,8 @@ var displayBookMarksList = function (list) {
 var clearForm = function () {
   bookmarkName.value = '';
   bookmarkURL.value = '';
+  bookmarkName.classList.remove('is-valid');
+  bookmarkURL.classList.remove('is-valid');
 };
 
 var deleteBookMark = function (id) {
