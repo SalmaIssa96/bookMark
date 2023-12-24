@@ -46,12 +46,17 @@
             </div>
             <p id='empty-fileds' class="d-none text-danger">Fields cannot be empty</p>
             <div class="w-100 d-flex justify-content-center">
-              <button class="btn-submit btn btn-primary" onclick=addBookMark()>Submit</button>
+              <button id="submitBtn" class="btn-submit btn btn-primary" onclick=addBookMark()>Submit</button>
+              <button id="updateBtn" class="btn-submit btn btn-primary d-none" onclick=updateBookMark()>update</button>
             </div>
           </div>
           <div>
           </div>
 
+        </div>
+        <div class="w-100 d-flex  align-items-center gap-2 my-3">
+          <label for="searchInput" class="form-label fw-bold"> Search </label>
+          <input type="text" class="form-control" id="searchInput" oninput=searchBookMark(this.value)>
         </div>
         <table class=" table mt-4 text-center">
           <thead>
@@ -60,6 +65,7 @@
               <th scope="col">Website Name</th>
               <th scope="col">Visit</th>
               <th scope="col">Delete</th>
+              <th scope="col">update</th>
             </tr>
           </thead>
           <tbody id="bookMarkListT">

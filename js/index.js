@@ -2,9 +2,12 @@ var bookmarkName = document.getElementById('bookmarkName');
 var bookmarkURL = document.getElementById('bookmarkURL');
 var bookMarkListT = document.getElementById('bookMarkListT');
 var emptyFiledsError = document.getElementById('empty-fileds');
+var submitBtn = document.getElementById('submitBtn');
+var updateBtn = document.getElementById('updateBtn');
+var searchInput = document.getElementById('searchInput');
 
-let bookMarksList = [];
-
+var bookMarksList = [];
+var inexToUpdate = -1;
 var addBookMark = function () {
   if (!bookmarkName.value || !bookmarkURL.value) {
     emptyFiledsError.classList.replace('d-none', 'd-block');
@@ -15,6 +18,7 @@ var addBookMark = function () {
     bMurl: bookmarkURL.value,
   };
   bookMarksList.push(bookMark);
+  localStorage.setItem('bookMarkListLs', JSON.stringify(bookMarksList));
   displayBookMarksList(bookMarksList);
 };
 var displayBookMarksList = function (list) {
@@ -30,11 +34,11 @@ var displayBookMarksList = function (list) {
   </a>  
     </td>
     <td><button class="btn btn-danger" onclick=deleteBookMark(${i})><i class="fa-solid fa-trash-can pe-2" ></i>Delete</button></td>
+    <td><button class="btn btn-warning" onclick=updateBM(${i}) ><i class="fa-solid fa-marker pe-2"></i>update</button></td>
   </tr>
     `;
   }
   emptyFiledsError.classList.replace('d-block', 'd-none');
-  localStorage.setItem('bookMarkListLs', JSON.stringify(list));
   bookMarkListT.innerHTML = tableBody;
   clearForm();
 };
@@ -57,6 +61,37 @@ const checkURL = function (url) {
   } else {
     return url;
   }
+};
+
+var updateBM = function (id) {
+  inexToUpdate = id;
+  bookmarkName.value = `${bookMarksList[id].bMname}`;
+  bookmarkURL.value = `${bookMarksList[id].bMurl}`;
+  submitBtn.classList.add('d-none');
+  updateBtn.classList.replace('d-none', 'd-block');
+  //put the old data in the form
+  // replace the submit button to update btn => when click the btn it should update the element to the new data .in the same index , using map .
+};
+var updateBookMark = function () {
+  if (inexToUpdate > -1) {
+    const updatedBM = {
+      bMname: bookmarkName.value,
+      bMurl: bookmarkURL.value,
+    };
+    bookMarksList[inexToUpdate] = updatedBM;
+    localStorage.setItem('bookMarkListLs', JSON.stringify(bookMarksList));
+    displayBookMarksList(bookMarksList);
+    inexToUpdate = -1;
+  }
+
+  submitBtn.classList.replace('d-none', 'd-block');
+  updateBtn.classList.replace('d-block', 'd-none');
+  clearForm();
+};
+
+var searchBookMark = function (text) {
+  const newList = bookMarksList.filter((item) => item.bMname.includes(text));
+  displayBookMarksList(newList);
 };
 
 function validateURL(url) {
